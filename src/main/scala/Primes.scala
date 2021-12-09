@@ -5,7 +5,7 @@ import scala.util.Try
 object Primes :
 
   private lazy val primes : LazyList[BigInt] =
-    inline def from(begin: BigInt, interval: Int): LazyList[BigInt] =
+    def from(begin: BigInt, interval: Int): LazyList[BigInt] =
       begin #:: from(begin + interval, interval)
 
     BigInt(2) #:: from(BigInt(3), 2).filter {
@@ -33,7 +33,7 @@ object Primes :
     else primes.takeWhile ( _ <= ai ).last == ai
   end isPrime
 
-  private inline val certainly : Int = 48
+  private inline val certainly = 48
 
   /**
    * Vérifie la primalité d'un nombre
