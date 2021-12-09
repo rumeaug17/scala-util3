@@ -4,7 +4,7 @@ import scala.collection.immutable
 
 // Scala 3 new code
 
-@main def hello =
+@main def hello() : Unit =
   println("Hello, world!")
 
 class Base(name : String) {
@@ -174,6 +174,7 @@ def check[T](a : T, b : T)(using eq : Equal[T]) : T =
 // enum (for ADT)
 
 // opaque type ou restriction
+// remplace TypeTag
 opaque type Positive = Int
 object Positive :
   def apply(x: Int): Positive =
