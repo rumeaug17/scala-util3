@@ -15,7 +15,11 @@ object PositiveIntegers :
   extension (x : Positive)
     def +(y : Positive) : Positive = x + y
     def *(y : Positive) : Positive = x * y
+    def /(y : Positive) : Positive = x / y
     def -(y : Positive) : Positive = 
       require(x >= y)    
       x - y
+
+  given int2Positive : Conversion[Int, Positive] = Positive(_)
+
 end PositiveIntegers
