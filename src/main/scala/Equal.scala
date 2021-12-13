@@ -1,3 +1,5 @@
+package org.rg.su3
+
 import scala.annotation.tailrec
 
 trait Equal[A] :
