@@ -28,6 +28,9 @@ object PositiveIntegers :
   given PositiveOrdering : Ordering[Positive] with
     def compare(a:Positive, b:Positive) = a compare b
 
+  given CanEqual[Positive, Positive] = CanEqual.derived
+  given CanEqual[Positive, Int] = CanEqual.derived
+
 end PositiveIntegers
 
 /*
