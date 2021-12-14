@@ -1,5 +1,8 @@
 package org.rg.su3.mesure
 
+extension(i : Int)
+  def times: Int = i
+
 case class Mesure[F](val blok: () => F, name: String = "", nbLoop: Int = 1, ignore: Int = 0) :
 
   def named(name: String) = this.copy(name = name)
