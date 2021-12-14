@@ -1,5 +1,7 @@
 package org.rg.su3
 
+import scala.util.Sorting
+
 object PositiveIntegers :
   
   opaque type Positive = Int
@@ -20,6 +22,17 @@ object PositiveIntegers :
       require(x >= y)    
       x - y
 
+    def toInt : Int = x
+
   given int2Positive : Conversion[Int, Positive] = Positive(_)
+  given PositiveOrdering : Ordering[Positive] with
+    def compare(a:Positive, b:Positive) = a compare b
 
 end PositiveIntegers
+
+/*
+* for using :
+import scala.language.implicitConversions
+import PositiveIntegers.*
+import PositiveIntegers.PositiveOrdering.mkOrderingOps
+*/
