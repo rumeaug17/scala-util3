@@ -136,6 +136,9 @@ object Equal {
 def check[T](a : T, b : T)(implicit eq : Equal[T]) : T =
   if eq.equals(a, b) then a else b
 
+def checkI[T : Equal](a : T, b : T) : T =
+  if implicitly[Equal[T]].equals(a, b) then a else b
+
 */
 
 // 2. en scala 3
@@ -158,6 +161,9 @@ given OptionEqual[T](using eq : Equal[T]) : Equal[Option[T]] with
 def check[T](a : T, b : T)(using eq : Equal[T]) : T =
   if eq.equals(a, b) then a else b
 
+def checkS[T : Equal](a : T, b : T) : T =
+  if summon[Equal[T]].equals(a, b) then a else b
+
 // n'existe pas en scala 2
 // derives ...
 
@@ -172,27 +178,3 @@ def check[T](a : T, b : T)(using eq : Equal[T]) : T =
 // intersection type
 
 // enum (for ADT)
-
-// opaque type ou restriction
-// remplace TypeTag
-opaque type Positive = Int
-object Positive :
-  def apply(x: Int): Positive =
-    if x >= 0 then
-      x
-    else
-      throw new IllegalArgumentException(s"$x must be positive.")
-
-  def safe(x : Int) : Option[Positive] =
-    if x >= 0 then
-      Some(x)
-    else
-      None
-
-end Positive
-
-extension (x : Positive)
-  def + (y : Positive) : Positive = Positive(x + y)
-  def * (y : Positive) : Positive = Positive(x * y)
-
-// indentation et blocs ...
