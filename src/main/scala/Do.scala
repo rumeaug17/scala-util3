@@ -13,7 +13,7 @@ sealed class Do[A](body : => A) :
     if condition(result) then result else until(condition)  
  
   @tailrec final def nTimes(n : Int) : A =
-    if (n == 0)  then 
+    if n == 0 then
       body 
     else
       val result = body

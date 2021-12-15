@@ -22,6 +22,6 @@ inline def authenticate(domain: String, login: String, passwd: String, host: Str
   props.update("https.auth.ntlm.domain", domain)
 
   Authenticator.setDefault(new Authenticator() {
-    override def getPasswordAuthentication(): PasswordAuthentication =
+    override def getPasswordAuthentication: PasswordAuthentication =
       new PasswordAuthentication(login, passwd.toCharArray())    
   })

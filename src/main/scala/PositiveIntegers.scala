@@ -26,7 +26,7 @@ object PositiveIntegers :
 
   given int2Positive : Conversion[Int, Positive] = Positive(_)
   given PositiveOrdering : Ordering[Positive] with
-    def compare(a:Positive, b:Positive) = a compare b
+    def compare(a:Positive, b:Positive): Positive = a compare b
 
   given CanEqual[Positive, Positive] = CanEqual.derived
   given CanEqual[Positive, Int] = CanEqual.derived

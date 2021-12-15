@@ -23,7 +23,7 @@ object State :
     final val run = f
   }
 
-  def init[S, A](a: A) = State { (s : S) => (s, a) }
+  def init[S, A](a: A): State[S, A] = State { (s : S) => (s, a) }
   def update[S, A](f: S => S): State[S, Unit] = State { (s: S) => (f(s), ()) }
   def get[S] : State[S, S] = State { s => (s, s) }
   def gets[S, A](f: S => A): State[S, A] = State { (s: S) => (s, f(s)) }

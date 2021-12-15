@@ -1,92 +1,93 @@
-package org.rg.su3.mesure
+package org.rg.su3
+package mesure
 
 trait Collector :
   def collect[F](name: String, result: F, durations: Seq[Long]): Result[F]
 
 case object Nothing extends Collector :
   def collect[F](nam: String, res: F, durations: Seq[Long]): Result[F] = new Result[F] {
-    val name = nam
-    val result = res
-    def stats = Map[String, Double]()
+    val name: String = nam
+    val result: F = res
+    def stats: Map[String, Double] = Map[String, Double]()
   }
 
 case object Average extends Collector :
   def collect[F](nam: String, res: F, durations: Seq[Long]): Result[F] = new Result[F] {
-    val name = nam
-    val result = res
+    val name : String = nam
+    val result : F = res
 
-    val avg = durations.sum / durations.length.toDouble
-    def stats = Map("Average" -> avg)
+    val avg: Double = durations.sum / durations.length.toDouble
+    def stats: Map[String, Double] = Map("Average" -> avg)
   }
 
 case object Total extends Collector :
   def collect[F](nam: String, res: F, durations: Seq[Long]): Result[F] = new Result[F] {
-    val name = nam
-    val result = res
+    val name: String = nam
+    val result: F = res
 
-    def total = durations.sum
-    val stats = Map("Total" -> (total: Double))
+    def total: Long = durations.sum
+    val stats: Map[String, Double] = Map("Total" -> total.toDouble)
   }
 
 case object MinMax extends Collector :
   def collect[F](nam: String, res: F, durations: Seq[Long]): Result[F] = new Result[F] {
-    val name = nam
-    val result = res
+    val name: String = nam
+    val result: F = res
 
-    val total = durations.sum
-    val average = total / (durations.length: Double)
-    def stats = Map(
+    val total: Long = durations.sum
+    val average: Double = total / durations.length.toDouble
+    def stats: Map[String, Double] = Map(
       "Average" -> average,
-      "Minimum" -> durations.min,
-      "Maximum" -> durations.max,
-      "Total" -> total)
+      "Minimum" -> durations.min.toDouble,
+      "Maximum" -> durations.max.toDouble,
+      "Total" -> total.toDouble)
   }
 
 case object FullStats extends Collector :
   def collect[F](nam: String, res: F, durations: Seq[Long]): Result[F] = new Result[F] {
-    val name = nam
-    val result = res
+    val name: String = nam
+    val result: F = res
 
-    val nbOfMesures = durations.length
-    val total = durations.sum
-    val average = total / (nbOfMesures: Double)
+    val nbOfMesures: Int = durations.length
+    val total: Long = durations.sum
+    val average: Double = total / nbOfMesures.toDouble
 
-    val variance = durations.map(m => Math.pow(m - average, 2)).sum / (nbOfMesures)
-    val stdDev = Math.sqrt(variance)
-    val coeff = (stdDev / average) * 100
+    val variance: Double = durations.map(m => Math.pow(m - average, 2)).sum / nbOfMesures
+    val stdDev: Double = Math.sqrt(variance)
+    val coeff: Double = (stdDev / average) * 100
 
-    val sortedDuration = durations.sorted
-    val median = sortedDuration(nbOfMesures / 2)
-    def firstFractile(fract: Int) = sortedDuration(nbOfMesures / fract)
-    def lastFractile(fract: Int) = sortedDuration(nbOfMesures * (fract - 1) / fract)
+    val sortedDuration: Seq[Long] = durations.sorted
+    val median: Long = sortedDuration(nbOfMesures / 2)
+    private def firstFractile(fract: Int): Long = sortedDuration(nbOfMesures / fract)
+    private def lastFractile(fract: Int): Long = sortedDuration(nbOfMesures * (fract - 1) / fract)
 
-    def interFractileAverage(fract : Int) =
+    private def interFractileAverage(fract : Int): Double =
       val nb = nbOfMesures / fract
       val nlist = sortedDuration.drop(nb).dropRight(nb)
       nlist.sum / (nlist.length : Double)
     
     
-    def pElemMoy(factor: Int) =
+    private def pElemMoy(factor: Int): Double =
       val factDev = factor * stdDev
-      val nbElemMoyen = durations.filter(p => (p > average - factDev) && (p < average + factDev)).length
-      nbElemMoyen / (nbOfMesures: Double) * 100
+      val nbElemMoyen = durations.count(p => (p > average - factDev) && (p < average + factDev))
+      nbElemMoyen / nbOfMesures.toDouble * 100
     
     def stats = Map(
       "Population" -> nbOfMesures,
       "Average" -> average,
-      "Total" -> total,
-      "Minimum" -> sortedDuration.head,
-      "Maximum" -> sortedDuration.last,
+      "Total" -> total.toDouble,
+      "Minimum" -> sortedDuration.head.toDouble,
+      "Maximum" -> sortedDuration.last.toDouble,
       "Variance" -> variance,
       "Standard deviation" -> stdDev,
-      "Median" -> median,
-      "First quartile" -> firstFractile(4),
-      "Last quartile" -> lastFractile(4),
-      "Interquartile distance" -> (lastFractile(4) - firstFractile(4)),
+      "Median" -> median.toDouble,
+      "First quartile" -> firstFractile(4).toDouble,
+      "Last quartile" -> lastFractile(4).toDouble,
+      "Interquartile distance" -> (lastFractile(4) - firstFractile(4)).toDouble,
       "Interquartile average" -> interFractileAverage(4),
-      "First decile" -> firstFractile(10),
-      "Last decile" -> lastFractile(10),
-      "Interdecile distance" -> (lastFractile(10) - firstFractile(10)),
+      "First decile" -> firstFractile(10).toDouble,
+      "Last decile" -> lastFractile(10).toDouble,
+      "Interdecile distance" -> (lastFractile(10).toDouble - firstFractile(10)),
       "Interdecile average" -> interFractileAverage(10),
       "Variation interval 1" -> pElemMoy(1),
       "Variation interval 2" -> pElemMoy(2),
