@@ -69,7 +69,7 @@ def primeFactors(n: BigInt): LazyList[BigInt] =
 end primeFactors
 
 def lpfac(n: BigInt) =
-  (primeFactors(n) toList) |> pack
+  pack(primeFactors(n) toList)
 
 def pfac(n: BigInt) =
   primeFactors(n) distinct

@@ -50,19 +50,3 @@ extension[R](f: => R)
   def or(r : R) : R =
     try f catch
       case e : Exception => r
-
-
-
-/**
- * fonction qui construit un objet Some (Option) typé
- */
-def some[A](a: A): scala.Option[A] = Some(a)
-
-/**
- * fonction qui construit un objet None (Option) typé
- * Ainsi none[Int] <> none[String]
- */
-def none[A]: scala.Option[A] = None
-
-extension (b : Boolean)
-  def option[A](e: => A): Option[A] = if b then some(e) else none[A]
