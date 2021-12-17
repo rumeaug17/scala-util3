@@ -1,3 +1,8 @@
+// buggé, voir formule ici pour approximate 
+// https://fr.wikipedia.org/wiki/Fraction_continue
+
+// sinon il existe la bibliothèque spire qui fait tout le boulot
+
 package org.rg.su3
 
 import scala.math.abs
