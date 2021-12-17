@@ -30,3 +30,14 @@ import scala.collection.immutable
     println("We have a problem here !")
   else
     println("ok")
+
+  val d = 23d/7
+  val d2 = 7d/23
+  println(d)
+  println(d2)
+  val r7 = Rational(23, 7)
+  println(r7.toDouble)
+  println(r7.inverse.toDouble)
+
+  println(Rational.approximate(d - 0.0000000001, d + 0.0000000001))
+  println(Rational.approximate(d2 - 0.0000000001, d2 + 0.0000000001))

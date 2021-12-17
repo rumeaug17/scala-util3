@@ -1,6 +1,6 @@
 package org.rg.su3
 
-import scala.math.Numeric.IntIsIntegral.abs
+import scala.math.abs
 
 object RationalImplicits:
   given IntToRational : Conversion[Int, Rational] = Rational(_)
@@ -58,7 +58,7 @@ class Rational(x: Int, y: Int) :
 
   def toDouble: Double = numer.toDouble / denom
   def isInt: Boolean = denom == 1
-  def toInt: Option[Int] = if isInt then Some(numer) else None
+  def toInt: Option[Int] = if isInt then some(numer) else none
 
   def inverse: Rational = Rational(denom, numer)
 
@@ -86,7 +86,7 @@ object Rational:
 
   def unapply(r: Rational): Option[(Int, Int)] = some(r.numer, r.denom)
 
-  val e = 1e-12
+  val e : Double = 1e-12
 
   def approximate(d: Double): Rational =
     d.abs match
@@ -102,16 +102,18 @@ object Rational:
       val f = d.floor // partie entiere et reste
       (f, d - f)
 
+    import RationalImplicits.IntToRational
+
     (d1, d2) match
       case (0, _)             => Rational(0)
       case (_, 0)             => Rational(0)
       case (x, y) if x == y => throw new Error("unable to calculate approximation for d")
       case (x, y) if y < 0  => -approximate(-x, -y)
       case (x, y) =>
-        val (xc, xr) = modf(1 / x)
-        val (yc, yr) = modf(1 / y)
-        if (xc < yc) Rational(1, xc.toInt + 1)
-        else if (xc > yc) Rational(1, yc.toInt + 1)
-        else Rational(1) / approximate(xr, yr) + Rational(xc.toInt)
+        val (xc, xr) = modf(1d / x)
+        val (yc, yr) = modf(1d / y)
+        if xc < yc then Rational(1, xc.toInt + 1)
+        else if xc > yc then Rational(1, yc.toInt + 1)
+        else 1 / approximate(xr, yr) + xc.toInt
 
 end Rational
