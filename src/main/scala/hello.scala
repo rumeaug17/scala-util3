@@ -1,15 +1,32 @@
 package org.rg.su3
 
+import RationalImplicits.RationalOrdering.mkOrderingOps
+import RationalImplicits.IntToRational
+import RationalImplicits.given_CanEqual_Rational_Int
+import RationalImplicits.*
+
 import scala.collection.immutable
 
-// Scala 3 new code
-
 @main def hello() : Unit =
-  println("Hello, world!")
+  val r = rl"1/2"
+  println(r.get.toString)
 
-// autres ajouts scala 3 non utilisés
+  r.get match
+    case Rational(x, 1) => println("r est un entier")
+    case Rational(1, y) => println("r est un décimal canonique")
+    case Rational(x, y) if x < y => println("r est un rationnel canaonique")
+    case _ => println("Hello, world!")
 
-// union type
-// intersection type
+  val comp = Rational(3.2) <= Rational(7.25)
+  val eq = Rational(1, 7) == Rational(2, 14)
+  val eq2 = (r.get * 2) == 1
+  println(s"comp = $comp, eq = $eq, eq2 = $eq2")
 
-// enum (for ADT)
+  val dev = rl"3/7".get / rl"4".get + rl"3/2".get * rl"2/8".get
+  println(s" dev = $dev")
+
+  val check = Rational(1).inverse == 1
+  if ! check then
+    println("We have a problem here !")
+  else
+    println("ok")

@@ -25,6 +25,7 @@ object PositiveIntegers :
     def toInt : Int = x
 
   given int2Positive : Conversion[Int, Positive] = Positive(_)
+
   given PositiveOrdering : Ordering[Positive] with
     def compare(a:Positive, b:Positive): Positive = a compare b
 
