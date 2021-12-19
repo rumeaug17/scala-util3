@@ -98,7 +98,7 @@ object Rational:
   def approximate(d : Double, maxLoop : Int = 20): Rational =
     import RationalImplicits.IntToRational
     if d < 0 then
-      -approximate(d)
+      -approximate(-d)
     else
       val (ent, rest) = modf(d)
       if rest < limit || maxLoop == 0 then
