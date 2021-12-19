@@ -1,3 +1,4 @@
+// obsolète, existe en type class avec CanEqual
 package org.rg.su3
 
 import scala.annotation.tailrec

@@ -39,5 +39,3 @@ import scala.collection.immutable
   println(r7.toDouble)
   println(r7.inverse.toDouble)
 
-  println(Rational.approximate(d - 0.0000000001, d + 0.0000000001))
-  println(Rational.approximate(d2 - 0.0000000001, d2 + 0.0000000001))

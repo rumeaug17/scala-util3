@@ -91,34 +91,45 @@ object Rational:
 
   def unapply(r: Rational): Option[(Int, Int)] = some(r.numer, r.denom)
 
-  val e : Double = 1e-12
+  private inline val limit = 1e-8
 
-  def approximate(d: Double): Rational =
-    d.abs match
-      case v if v < 1 => approximate(1000 * d - e, 1000 * d + e) / Rational(1000)
-      case v if v < 10 => approximate(100 * d - e, 100 * d + e) / Rational(100)
-      case v if v < 100 => approximate(10 * d - e, 10 * d + e) / Rational(10)
-      case _ => approximate(d - e, d + e)
+  private def modf(d: Double): (Int, Double) =
+    val f = d.floor // partie entiere et reste
+    (f.toInt, d - f)
 
+  def approximate(d : Double, maxLoop : Int = 20): Rational =
+    import RationalImplicits.IntToRational
+    if d < 0 then
+      -approximate(d)
+    else
+      val (ent, rest) = modf(d)
+      if rest < limit || maxLoop == 0 then
+        Rational(ent)
+      else
+        Rational(ent) + approximate(1d/rest, maxLoop - 1).inverse
+
+  
+  def approximateOld(d: Double): Rational =
+    val (ent, rest) = modf(d)
+    if ent !=0 then Rational(ent) + approximateOld(rest)
+    else
+      approximateOld(1000 * d - limit, 1000 * d + limit) / Rational(1000)
 
   // approximation d'un reel par le developpement en fraction continue
-  def approximate(d1: Double, d2: Double): Rational =
-    def modf(d: Double): (Double, Double) =
-      val f = d.floor // partie entiere et reste
-      (f, d - f)
+  def approximateOld(d1: Double, d2: Double): Rational =
+    if d1 > d2 then approximateOld(d2, d1)
+    else
+      import RationalImplicits.IntToRational
 
-    import RationalImplicits.IntToRational
-
-    (d1, d2) match
-      case (0, _)             => Rational(0)
-      case (_, 0)             => Rational(0)
-      case (x, y) if x == y => throw new Error("unable to calculate approximation for d")
-      case (x, y) if y < 0  => -approximate(-x, -y)
-      case (x, y) =>
-        val (xc, xr) = modf(1d / x)
-        val (yc, yr) = modf(1d / y)
-        if xc < yc then Rational(1, xc.toInt + 1)
-        else if xc > yc then Rational(1, yc.toInt + 1)
-        else 1 / approximate(xr, yr) + xc.toInt
+      (d1, d2) match
+        case (x, y) if x <= 0 && 0 <= y => Rational(0)
+        case (x, y) if x == y => throw new Error("unable to calculate approximation for d")
+        case (x, y) if y < 0  => -approximateOld(-x, -y)
+        case (x, y) =>
+          val (xc, xr) = modf(1 / x)
+          val (yc, yr) = modf(1 / y)
+          if xc < yc then Rational(1, xc + 1)
+          else if xc > yc then Rational(1, yc + 1)
+          else xc + 1 / approximateOld(xr, yr)
 
 end Rational
