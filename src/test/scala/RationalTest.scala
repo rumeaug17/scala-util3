@@ -1,5 +1,4 @@
 package org.rg.su3
-package tests
 
 import RationalImplicits.RationalOrdering.mkOrderingOps
 import RationalImplicits.IntToRational
@@ -10,7 +9,7 @@ import RationalImplicits.*
 import scala.collection.immutable
 import org.scalatest.funsuite.AnyFunSuite
 
-class RationalSuite extends AnyFunSuite:
+class RationalTest extends AnyFunSuite:
 
   test("1/2 est plus petit que 2/3") {
     val r1 = Rational(1, 2)
@@ -65,6 +64,6 @@ class RationalSuite extends AnyFunSuite:
     assert(Rational(-4d/3) == rl"-4/3".get)
   }
 
-end RationalSuite
+end RationalTest
 
 
