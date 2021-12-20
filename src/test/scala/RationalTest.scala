@@ -38,7 +38,7 @@ class RationalSuite extends AnyFunSuite:
     assert(Rational(5, 2).toDouble == 2.5d)
   }
 
-  test("rational(double(rational) ~= rational") {
+  test("rational(double(rational)) ~= rational") {
     val listOfr = Seq(Rational(1, 2), Rational(3, 2), Rational(2, 5), Rational(1, 3), Rational(23, 7))
     listOfr.foreach(r => assert(Rational(r.toDouble) == r))
   }
@@ -59,6 +59,10 @@ class RationalSuite extends AnyFunSuite:
 
   test("-(3/2) = (-3)/2") {
     assert(-Rational(3, 2) == Rational(-3, 2))
+  }
+
+  test("-4/3 = -4/3") {
+    assert(Rational(-4d/3) == rl"-4/3".get)
   }
 
 end RationalSuite
