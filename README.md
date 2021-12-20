@@ -5,10 +5,10 @@ Réécriture de mon vieux machin scala util avec scala version 3, en essayant d'
 
 Le code de mesure qui était séparé, a été ajouté dans le même projet, par simplicité.
 
-Il manque les types Rational et Integral
+Il manque le type Integral, à revoir complètement ?
 
 Il manque aussi les tests (avec scalatest et scalacheck, mais les deux ne fonctionnent plus bien ensemble depuis la dernière version de scalatest)
-Peut-être faire deus séries de test ??
+Peut-être faire deux séries de test ??
 
 À voir aussi les macros
 
