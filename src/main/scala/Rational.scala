@@ -30,7 +30,6 @@ end RationalImplicits
 
 class Rational(x: Int, y: Int) :
   require(y != 0, "denominator must be different from zero")
-
   def this(x: Int) = this(x, 1)
   def this() = this(1, 1)
 

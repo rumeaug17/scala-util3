@@ -4,6 +4,7 @@ import RationalImplicits.RationalOrdering.mkOrderingOps
 import RationalImplicits.IntToRational
 import RationalImplicits.DoubleToRational
 import RationalImplicits.given_CanEqual_Rational_Int
+import RationalImplicits.given_CanEqual_Rational_Double
 import RationalImplicits.*
 
 import scala.collection.immutable
@@ -62,6 +63,12 @@ class RationalTest extends AnyFunSuite:
 
   test("-4/3 = -4/3") {
     assert(Rational(-4d/3) == rl"-4/3".get)
+  }
+
+  test("-1.25d * 4 / 3d") {
+    val v1 = -1.25d * 4 / 3d
+    val r1 = rl"-5/4".get * 4 / Rational(3)
+    assert(r1 == Rational(v1))
   }
 
 end RationalTest
