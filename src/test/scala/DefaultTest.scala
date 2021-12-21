@@ -6,7 +6,7 @@ import org.scalatest.funsuite.AnyFunSuite
 class DefaultTest extends AnyFunSuite:
 
   test("Default value for Boolean") {
-    assert(Default.value[Boolean] == false)
+    assert(!Default.value[Boolean])
   }
 
   test("Default value for Int") {
@@ -18,7 +18,7 @@ class DefaultTest extends AnyFunSuite:
   }
 
   test("Default value for Option") {
-    assert(Default.value[Option[Int]] == None)
+    assert(Default.value[Option[Int]].isEmpty)
   }
 
   test("Default value for Seq") {
