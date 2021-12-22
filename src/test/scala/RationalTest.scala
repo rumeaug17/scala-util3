@@ -71,6 +71,10 @@ class RationalTest extends AnyFunSuite:
     assert(r1 == Rational(v1))
   }
 
+  test("-4/-3 = 4/3") {
+    assert(Rational(-4, -3) == rl"4/3".get)
+  }
+
 end RationalTest
 
 
