@@ -106,29 +106,7 @@ object Rational:
         Rational(ent)
       else
         Rational(ent) + approximate(1d/rest, maxLoop - 1).inverse
-
   
-  def approximateOld(d: Double): Rational =
-    val (ent, rest) = modf(d)
-    if ent !=0 then Rational(ent) + approximateOld(rest)
-    else
-      approximateOld(1000 * d - limit, 1000 * d + limit) / Rational(1000)
-
   // approximation d'un reel par le developpement en fraction continue
-  def approximateOld(d1: Double, d2: Double): Rational =
-    if d1 > d2 then approximateOld(d2, d1)
-    else
-      import RationalImplicits.IntToRational
-
-      (d1, d2) match
-        case (x, y) if x <= 0 && 0 <= y => Rational(0)
-        case (x, y) if x == y => throw new Error("unable to calculate approximation for d")
-        case (x, y) if y < 0  => -approximateOld(-x, -y)
-        case (x, y) =>
-          val (xc, xr) = modf(1 / x)
-          val (yc, yr) = modf(1 / y)
-          if xc < yc then Rational(1, xc + 1)
-          else if xc > yc then Rational(1, yc + 1)
-          else xc + 1 / approximateOld(xr, yr)
 
 end Rational
