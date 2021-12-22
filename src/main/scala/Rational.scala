@@ -35,6 +35,8 @@ class Rational(x: Int, y: Int) :
 
   private val g = gcd(abs(x), abs(y))
 
+  private inline val isDoubleNeg = x < 0 && y < 0
+
   def numer: Int = x / g
   def denom: Int = y / g
 
