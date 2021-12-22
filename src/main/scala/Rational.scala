@@ -90,13 +90,14 @@ object Rational:
 
   def unapply(r: Rational): Option[(Int, Int)] = some(r.numer, r.denom)
 
-  private inline val limit = 1e-8
+  private inline val limit = 1e-12
 
   private def modf(d: Double): (Int, Double) =
     val f = d.floor // partie entiere et reste
     (f.toInt, d - f)
 
-  def approximate(d : Double, maxLoop : Int = 20): Rational =
+  // approximation d'un reel par le developpement en fraction continue
+  def approximate(d : Double, maxLoop : Int = 40): Rational =
     import RationalImplicits.IntToRational
     if d < 0 then
       -approximate(-d)
@@ -106,7 +107,5 @@ object Rational:
         Rational(ent)
       else
         Rational(ent) + approximate(1d/rest, maxLoop - 1).inverse
-  
-  // approximation d'un reel par le developpement en fraction continue
 
 end Rational
