@@ -33,9 +33,9 @@ class Rational(x: Int, y: Int) :
   def this(x: Int) = this(x, 1)
   def this() = this(1, 1)
 
-  private inline val g = gcd(abs(x), abs(y))
+  private val g = gcd(abs(x), abs(y))
 
-  private inline val isDoubleNeg = x < 0 && y < 0
+  private val isDoubleNeg = x < 0 && y < 0
 
   def numer: Int = if isDoubleNeg then -x / g else x / g
   def denom: Int = if isDoubleNeg then -y / g else y / g
