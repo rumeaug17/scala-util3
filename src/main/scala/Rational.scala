@@ -37,8 +37,8 @@ class Rational(x: Int, y: Int) :
 
   private inline val isDoubleNeg = x < 0 && y < 0
 
-  def numer: Int = x / g
-  def denom: Int = y / g
+  def numer: Int = if isDoubleNeg then -x / g else x / g
+  def denom: Int = if isDoubleNeg then -y / g else y / g
 
   def compare(that: Rational): Int =
     numer * that.denom - that.numer * denom
