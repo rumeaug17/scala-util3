@@ -26,4 +26,9 @@ class PositiveIntegersTest extends AnyFunSuite:
   test("Negative is not Positive"){
     assert(Positive.safe(-1) == None)
   }
-// add error test with negative int
+
+  test("Exception when Negative") {
+    assertThrows[IllegalArgumentException] {
+      val p  : Positive = 1 - 2
+    }
+  }
