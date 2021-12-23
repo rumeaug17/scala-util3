@@ -23,4 +23,7 @@ class PositiveIntegersTest extends AnyFunSuite:
     assert(Positive(1) < 2)
   }
 
+  test("Negative is not Positive"){
+    assert(Positive.safe(-1) == None)
+  }
 // add error test with negative int
