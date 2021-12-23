@@ -8,7 +8,6 @@ import org.scalatest.funsuite.AnyFunSuite
 import scala.util.Random
 
 class StateRandomTest extends AnyFunSuite:
-  type SRandom = State[Random, Int]
 
   test("State monad for standard scala PRNG") {
     type SRandom[A] = State[Random, A]
@@ -20,4 +19,5 @@ class StateRandomTest extends AnyFunSuite:
     val l = boolRandomList(5)(0)
     assert (l == List(true, true, false, true, true))
   }
+
 end StateRandomTest
