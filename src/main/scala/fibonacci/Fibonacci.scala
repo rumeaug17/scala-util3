@@ -58,7 +58,7 @@ case object TrampolineImpl extends Fibonacci("Trampoline") :
       else for 
           x <- tailcall(fib_impl(n-1))
           y <- tailcall(fib_impl(n-2))
-      yield (x + y)         
+      yield x + y
     
     def fib(n: BigInt): BigInt =
       fib_impl(n).result
@@ -67,35 +67,32 @@ case object StateMemo extends Fibonacci("State"):
 
   type Memo = Map[BigInt, BigInt]
 
-  def fib(n: BigInt): BigInt = {
-
-    def fib_impl(z: BigInt): State[Memo, BigInt] = {
-      if (z <= 1)
+  def fib(n: BigInt): BigInt =
+    def fib_impl(z: BigInt): State[Memo, BigInt] =
+      if z <= 1 then
         State.init(1)
-      else {
-        for {
-          memoed <- State.gets { m: Memo => m get z }
-          res <- memoed match {
+      else for
+          memoed <- State.gets { (m: Memo) => m get z }
+          res <- memoed match
             case Some(fibN) => State.init[Memo, BigInt](fibN)
             case None =>
-              for {
+              for
                 a <- fib_impl(z - 1)
                 b <- fib_impl(z - 2)
                 fibN = a + b
-                _ <- State.update { m: Memo => m + (z -> fibN) }
-              } yield fibN
-          }
-        } yield res
-      }
-    }
+                _ <- State.update { (m: Memo) => m + (z -> fibN) }
+              yield fibN
+      yield res
+    end fib_impl
 
-    fib_impl(n) eval (Map())
-  }
+    fib_impl(n) eval Map()
+  end fib
+end StateMemo
 
 // il manque
 // MutableMemo (plusieurs versions)
 // ImmutableMemo (autre version que State)
 
 @main def hello() : Unit =
-  val listOfImpl : List[Fibonacci] = List(ImperativeImpl, TailRecImpl, StreamImpl)
-  Mesure.fancyPrint(NaiveImpl.test(33) +: TrampolineImpl.test(33) +: listOfImpl.map(_.test(800)) : _*)()
+  val listOfImpl : List[Fibonacci] = List(ImperativeImpl, TailRecImpl, StreamImpl, StateMemo)
+  Mesure.fancyPrint(NaiveImpl.test(33) +: TrampolineImpl.test(33) +: listOfImpl.map(_.test(800)) : _*)("Interquartile average")
