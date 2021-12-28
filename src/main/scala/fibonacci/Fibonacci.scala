@@ -6,7 +6,7 @@ import mesure.{Mesure, Result, FullStats, times}
 import scala.annotation.tailrec
 import scala.language.{implicitConversions, reflectiveCalls, postfixOps}
 
-trait Fibonacci(name : String):
+trait Fibonacci(val name : String):
   def fib(n : BigInt) : BigInt
   def test(n : Int) : Result[BigInt] = Mesure {
     val r = for
@@ -95,4 +95,10 @@ end StateMemo
 
 @main def hello() : Unit =
   val listOfImpl : List[Fibonacci] = List(ImperativeImpl, TailRecImpl, StreamImpl, StateMemo)
+
+  (NaiveImpl +: TrampolineImpl +: listOfImpl).foreach {
+    (f : Fibonacci) =>
+      println(s"Fibonacci ${f.name} \t\t: Fib(1) = ${f.fib(1)}, Fib(2) = ${f.fib(2)}, Fib(10) = ${f.fib(10)}, Fib(33) = ${f.fib(33)}")
+  }
+
   Mesure.fancyPrint(NaiveImpl.test(33) +: TrampolineImpl.test(33) +: listOfImpl.map(_.test(800)) : _*)("Interquartile average")
