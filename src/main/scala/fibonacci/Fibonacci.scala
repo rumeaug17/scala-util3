@@ -46,7 +46,7 @@ case object TailRecImpl extends Fibonacci("Tail recursive"):
 end TailRecImpl
 
 case object StreamImpl extends Fibonacci("Lazy Stream"):
-  private lazy val fibStream: LazyList[BigInt] = BigInt(0) #:: BigInt(1) #:: fibStream.zip(fibStream.tail).map(p => p._1 + p._2)
+  private lazy val fibStream: LazyList[BigInt] = BigInt(1) #:: BigInt(1) #:: fibStream.zip(fibStream.tail).map(p => p._1 + p._2)
   def fib(n: BigInt): BigInt =
     fibStream(n.toInt)
 
