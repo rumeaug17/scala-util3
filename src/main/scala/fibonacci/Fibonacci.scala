@@ -50,12 +50,24 @@ case object StreamImpl extends Fibonacci("Lazy Stream"):
   def fib(n: BigInt): BigInt =
     fibStream(n.toInt)
 
+// very long and inefficient but without stack overflow
+case object TrampolineImpl extends Fibonacci("Trampoline") :
+    import scala.util.control.TailCalls._    
+    private def fib_impl(n : BigInt) : TailRec[BigInt] =
+      if n <=1 then done(1)
+      else for 
+          x <- tailcall(fib_impl(n-1))
+          y <- tailcall(fib_impl(n-2))
+      yield (x + y)         
+    
+    def fib(n: BigInt): BigInt =
+      fib_impl(n).result
+  
 // il manque
 // State
-// trampoline
 // MutableMemo (plusieurs versions)
 // ImmutableMemo (autre version que State)
 
 @main def hello() : Unit =
   val listOfImpl : List[Fibonacci] = List(ImperativeImpl, TailRecImpl, StreamImpl)
-  Mesure.fancyPrint(NaiveImpl.test(33) +: listOfImpl.map(_.test(800)) : _*)()
+  Mesure.fancyPrint(NaiveImpl.test(33) +: TrampolineImpl.test(33) +: listOfImpl.map(_.test(800)) : _*)()
