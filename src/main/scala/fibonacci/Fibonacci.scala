@@ -40,7 +40,7 @@ case object TailRecImpl extends Fibonacci("Tail recursive"):
   def fib(n: BigInt): BigInt =
     @tailrec def fib_impl(z : BigInt, prev : BigInt, next : BigInt) : BigInt =
       z match
-        case zoo if zoo == 0 => prev
+        case 0 => prev
         case _ => fib_impl(z - 1, next, prev + next)
     fib_impl(n, 1, 1)
 end TailRecImpl
