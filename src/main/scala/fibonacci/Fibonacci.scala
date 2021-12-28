@@ -63,8 +63,36 @@ case object TrampolineImpl extends Fibonacci("Trampoline") :
     def fib(n: BigInt): BigInt =
       fib_impl(n).result
   
+case object StateMemo extends Fibonacci("State"):
+
+  type Memo = Map[BigInt, BigInt]
+
+  def fib(n: BigInt): BigInt = {
+
+    def fib_impl(z: BigInt): State[Memo, BigInt] = {
+      if (z <= 1)
+        State.init(1)
+      else {
+        for {
+          memoed <- State.gets { m: Memo => m get z }
+          res <- memoed match {
+            case Some(fibN) => State.init[Memo, BigInt](fibN)
+            case None =>
+              for {
+                a <- fib_impl(z - 1)
+                b <- fib_impl(z - 2)
+                fibN = a + b
+                _ <- State.update { m: Memo => m + (z -> fibN) }
+              } yield fibN
+          }
+        } yield res
+      }
+    }
+
+    fib_impl(n) eval (Map())
+  }
+
 // il manque
-// State
 // MutableMemo (plusieurs versions)
 // ImmutableMemo (autre version que State)
 
