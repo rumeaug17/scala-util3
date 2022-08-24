@@ -1,11 +1,11 @@
-ThisBuild / version := "1.0.0"
+ThisBuild / version := "1.1.0"
 
 maintainer := "rumeaug17@gmail.com"
 
-ThisBuild / scalaVersion := "3.1.0"
+ThisBuild / scalaVersion := "3.1.3"
 
-libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test"
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.12"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12" % "test"
 
 lazy val root = (project in file("."))
   .settings(
